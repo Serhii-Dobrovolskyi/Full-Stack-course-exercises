@@ -8,7 +8,7 @@ sequenceDiagram
     browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
     activate server
 
-    Note right of server: Server inserts the note onto the database
+    Note right of server: Server adds a note to the database
 
     server-->>browser: Empty response (302 Redirect - https://studies.cs.helsinki.fi/exampleapp/notes)
     deactivate server
