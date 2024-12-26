@@ -1,51 +1,92 @@
 import { useState } from "react";
+
+const StatisticLine = ({ text, value }) => {
+  return (
+    <tr>
+      <td>{text}</td>
+      <td>{value}</td>
+    </tr>
+  );
+};
 const Statistics = ({ good, neutral, bad, all, average, positive }) => {
   return (
     <>
       <h2>statistics</h2>
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
-      <p>all {all}</p>
-      <p>average {average}</p>
-      <p>positive {positive} %</p>
+      <table>
+        <tbody>
+          <StatisticLine text="good" value={good} />
+          <StatisticLine text="neutral" value={neutral} />
+          <StatisticLine text="bad" value={bad} />
+          <StatisticLine text="all" value={all} />
+          <StatisticLine text="average" value={average} />
+          <StatisticLine text="positive" value={`${positive} %`} />
+        </tbody>
+      </table>
     </>
   );
 };
 const App = () => {
-  const [good, setGood] = useState(0);
-  const [neutral, setNeutral] = useState(0);
-  const [bad, setBad] = useState(0);
-  const [all, setAll] = useState(0);
-  const [average, setAverage] = useState(0);
-  const [positive, setPositive] = useState(0);
-
+  const [clicks, setClicks] = useState({
+    good: 0,
+    neutral: 0,
+    bad: 0,
+    all: 0,
+    average: 0,
+    positive: 0,
+  });
   const calculateAverage = (pos, neg, total) => (pos - neg) / total;
   const calculatePositive = (pos, all) => (pos / all) * 100;
 
   const goodClick = () => {
-    const updatedGood = good + 1;
-    setGood(updatedGood);
-    const updatedAll = updatedGood + neutral + bad;
-    setAll(updatedAll);
-    setAverage(calculateAverage(updatedGood, bad, updatedAll));
-    setPositive(calculatePositive(updatedGood, updatedAll));
+    const newClicks = {
+      ...clicks,
+      good: clicks.good + 1,
+      all: clicks.good + 1 + clicks.neutral + clicks.bad,
+      average: calculateAverage(
+        clicks.good + 1,
+        clicks.bad,
+        clicks.good + 1 + clicks.neutral + clicks.bad
+      ),
+      positive: calculatePositive(
+        clicks.good + 1,
+        clicks.good + 1 + clicks.neutral + clicks.bad
+      ),
+    };
+    setClicks(newClicks);
   };
   const neutralClick = () => {
-    const updatedNeutral = neutral + 1;
-    setNeutral(updatedNeutral);
-    const updatedAll = good + updatedNeutral + bad;
-    setAll(updatedAll);
-    setAverage(calculateAverage(good, bad, updatedAll));
-    setPositive(calculatePositive(good, updatedAll));
+    const newClicks = {
+      ...clicks,
+      neutral: clicks.neutral + 1,
+      all: clicks.good + clicks.neutral + 1 + clicks.bad,
+      average: calculateAverage(
+        clicks.good,
+        clicks.bad,
+        clicks.good + clicks.neutral + 1 + clicks.bad
+      ),
+      positive: calculatePositive(
+        clicks.good,
+        clicks.good + clicks.neutral + 1 + clicks.bad
+      ),
+    };
+    setClicks(newClicks);
   };
   const badClick = () => {
-    const updatedBad = bad + 1;
-    setBad(updatedBad);
-    const updatedAll = good + neutral + updatedBad;
-    setAll(updatedAll);
-    setAverage(calculateAverage(good, updatedBad, updatedAll));
-    setPositive(calculatePositive(good, updatedAll));
+    const newClicks = {
+      ...clicks,
+      bad: clicks.bad + 1,
+      all: clicks.good + clicks.neutral + clicks.bad + 1,
+      average: calculateAverage(
+        clicks.good,
+        clicks.bad + 1,
+        clicks.good + clicks.neutral + clicks.bad + 1
+      ),
+      positive: calculatePositive(
+        clicks.good,
+        clicks.good + clicks.neutral + clicks.bad + 1
+      ),
+    };
+    setClicks(newClicks);
   };
 
   return (
@@ -54,14 +95,18 @@ const App = () => {
       <button onClick={goodClick}>good</button>
       <button onClick={neutralClick}>neutral</button>
       <button onClick={badClick}>bad</button>
-      <Statistics
-        good={good}
-        neutral={neutral}
-        bad={bad}
-        all={all}
-        average={average}
-        positive={positive}
-      />
+      {clicks.all === 0 ? (
+        <h3>No feedback given</h3>
+      ) : (
+        <Statistics
+          good={clicks.good}
+          neutral={clicks.neutral}
+          bad={clicks.bad}
+          all={clicks.all}
+          average={clicks.average}
+          positive={clicks.positive}
+        />
+      )}
     </div>
   );
 };
