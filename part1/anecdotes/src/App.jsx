@@ -15,16 +15,18 @@ const App = () => {
   const [anecdotesVotes, setAnecdotesVotes] = useState(
     Array(anecdotes.length).fill(0)
   );
-
   const clickVote = () => {
     const newArray = [...anecdotesVotes];
     newArray[selected] += 1;
     setAnecdotesVotes(newArray);
   };
+  const findMaxIndex = () =>
+    anecdotesVotes.indexOf(Math.max(...anecdotesVotes));
   return (
     <div>
+      <h2>Anecdote of the day</h2>
       {anecdotes[selected]}
-      <br />
+      <p>has {anecdotesVotes[selected]}</p>
       <button onClick={clickVote}>vote</button>
       <button
         onClick={() =>
@@ -33,6 +35,9 @@ const App = () => {
       >
         next anecdote
       </button>
+      <h2>Anecdote with most votes</h2>
+      <p>{anecdotes[findMaxIndex()]}</p>
+      <span>has {anecdotesVotes[findMaxIndex()]}</span>
     </div>
   );
 };
