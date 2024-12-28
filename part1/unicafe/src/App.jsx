@@ -30,27 +30,16 @@ const App = () => {
     good: 0,
     neutral: 0,
     bad: 0,
-    all: 0,
-    average: 0,
-    positive: 0,
   });
-  const calculateAverage = (pos, neg, total) => (pos - neg) / total;
-  const calculatePositive = (pos, all) => (pos / all) * 100;
+
+  const calculateAll = () => clicks.good + clicks.neutral + clicks.bad;
+  const calculateAverage = () => (clicks.good - clicks.bad) / calculateAll();
+  const calculatePositive = () => (clicks.good / calculateAll()) * 100;
 
   const goodClick = () => {
     const newClicks = {
       ...clicks,
       good: clicks.good + 1,
-      all: clicks.good + 1 + clicks.neutral + clicks.bad,
-      average: calculateAverage(
-        clicks.good + 1,
-        clicks.bad,
-        clicks.good + 1 + clicks.neutral + clicks.bad
-      ),
-      positive: calculatePositive(
-        clicks.good + 1,
-        clicks.good + 1 + clicks.neutral + clicks.bad
-      ),
     };
     setClicks(newClicks);
   };
@@ -58,16 +47,6 @@ const App = () => {
     const newClicks = {
       ...clicks,
       neutral: clicks.neutral + 1,
-      all: clicks.good + clicks.neutral + 1 + clicks.bad,
-      average: calculateAverage(
-        clicks.good,
-        clicks.bad,
-        clicks.good + clicks.neutral + 1 + clicks.bad
-      ),
-      positive: calculatePositive(
-        clicks.good,
-        clicks.good + clicks.neutral + 1 + clicks.bad
-      ),
     };
     setClicks(newClicks);
   };
@@ -75,16 +54,6 @@ const App = () => {
     const newClicks = {
       ...clicks,
       bad: clicks.bad + 1,
-      all: clicks.good + clicks.neutral + clicks.bad + 1,
-      average: calculateAverage(
-        clicks.good,
-        clicks.bad + 1,
-        clicks.good + clicks.neutral + clicks.bad + 1
-      ),
-      positive: calculatePositive(
-        clicks.good,
-        clicks.good + clicks.neutral + clicks.bad + 1
-      ),
     };
     setClicks(newClicks);
   };
@@ -95,16 +64,16 @@ const App = () => {
       <button onClick={goodClick}>good</button>
       <button onClick={neutralClick}>neutral</button>
       <button onClick={badClick}>bad</button>
-      {clicks.all === 0 ? (
+      {!calculateAll() ? (
         <h3>No feedback given</h3>
       ) : (
         <Statistics
           good={clicks.good}
           neutral={clicks.neutral}
           bad={clicks.bad}
-          all={clicks.all}
-          average={clicks.average}
-          positive={clicks.positive}
+          all={calculateAll()}
+          average={calculateAverage()}
+          positive={calculatePositive()}
         />
       )}
     </div>
