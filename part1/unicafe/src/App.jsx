@@ -31,7 +31,6 @@ const App = () => {
     neutral: 0,
     bad: 0,
   });
-
   const calculateAll = () => clicks.good + clicks.neutral + clicks.bad;
   const calculateAverage = () => (clicks.good - clicks.bad) / calculateAll();
   const calculatePositive = () => (clicks.good / calculateAll()) * 100;
