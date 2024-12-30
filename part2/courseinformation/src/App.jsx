@@ -19,15 +19,6 @@ const Content = ({ parts }) => {
     </div>
   );
 };
-
-// const Total = ({ parts }) => {
-//   return (
-//     <p>
-//       Number of exercises {parts.reduce((acc, num) => acc + num.exercises, 0)}
-//     </p>
-//   );
-// };
-
 const Total = ({ parts }) => (
   <b>
     total of {parts.reduce((acc, num) => acc + num.exercises, 0)} exercises
