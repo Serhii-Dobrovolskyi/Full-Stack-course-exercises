@@ -20,13 +20,19 @@ const Content = ({ parts }) => {
   );
 };
 
-const Total = ({ parts }) => {
-  return (
-    <p>
-      Number of exercises {parts.reduce((acc, num) => acc + num.exercises, 0)}
-    </p>
-  );
-};
+// const Total = ({ parts }) => {
+//   return (
+//     <p>
+//       Number of exercises {parts.reduce((acc, num) => acc + num.exercises, 0)}
+//     </p>
+//   );
+// };
+
+const Total = ({ parts }) => (
+  <b>
+    Number of exercises {parts.reduce((acc, num) => acc + num.exercises, 0)}
+  </b>
+);
 
 const Course = ({ course }) => {
   return (
@@ -56,6 +62,11 @@ const App = () => {
         name: "State of a component",
         exercises: 14,
         id: 3,
+      },
+      {
+        name: "Redux",
+        exercises: 11,
+        id: 4,
       },
     ],
   };
