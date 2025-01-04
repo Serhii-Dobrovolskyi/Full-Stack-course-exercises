@@ -12,7 +12,6 @@ const App = () => {
 
   const [filterPersons, setFilterPersons] = useState("");
 
-
   const addName = (e) => {
     e.preventDefault();
     if (newName) {
@@ -23,6 +22,7 @@ const App = () => {
       const newUser = {
         name: newName,
         number: newNumber,
+        id: persons.length + 1,
       };
 
       setPersons(persons.concat(newUser));
@@ -30,7 +30,11 @@ const App = () => {
       setNewNumber("");
     }
   };
-  const showPersons = !filterPersons ? persons : persons.filter((el) => el.name.includes(filterPersons))
+  const showPersons = !filterPersons
+    ? persons
+    : persons.filter((el) =>
+        el.name.toLowerCase().includes(filterPersons.toLowerCase())
+      );
   return (
     <div>
       <h2>Phonebook</h2>
@@ -65,24 +69,11 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      {/* {!filterPersons
-        ? persons.map((el) => (
-            <p key={el.name}>
-              {el.name} {el.number}
-            </p>
-          ))
-        : persons.filter((el) => el.name.includes(filterPersons)).map((el) => (
-            <p key={el.name}>
-              {el.name} {el.number}
-            </p>
-          ))} */}
-      {
-        showPersons.map((el) => (
-          <p key={el.name}>
-            {el.name} {el.number}
-          </p>
-        ))
-      }
+      {showPersons.map((el) => (
+        <p key={el.id}>
+          {el.name} {el.number}
+        </p>
+      ))}
     </div>
   );
 };
