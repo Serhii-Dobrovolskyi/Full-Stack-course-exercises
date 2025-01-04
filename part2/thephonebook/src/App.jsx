@@ -9,7 +9,9 @@ const App = () => {
   ]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
-  
+
+  const [filterPersons, setFilterPersons] = useState("");
+
 
   const addName = (e) => {
     e.preventDefault();
@@ -28,10 +30,17 @@ const App = () => {
       setNewNumber("");
     }
   };
-
+  const showPersons = !filterPersons ? persons : persons.filter((el) => el.name.includes(filterPersons))
   return (
     <div>
       <h2>Phonebook</h2>
+      <div>
+        filter shown with{" "}
+        <input
+          value={filterPersons}
+          onChange={(e) => setFilterPersons(e.target.value)}
+        />
+      </div>
       <h2>add a new</h2>
       <form onSubmit={addName}>
         <div>
@@ -56,11 +65,24 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      {persons.map((el) => (
-        <p key={el.name}>
-          {el.name} {el.number}
-        </p>
-      ))}
+      {/* {!filterPersons
+        ? persons.map((el) => (
+            <p key={el.name}>
+              {el.name} {el.number}
+            </p>
+          ))
+        : persons.filter((el) => el.name.includes(filterPersons)).map((el) => (
+            <p key={el.name}>
+              {el.name} {el.number}
+            </p>
+          ))} */}
+      {
+        showPersons.map((el) => (
+          <p key={el.name}>
+            {el.name} {el.number}
+          </p>
+        ))
+      }
     </div>
   );
 };
