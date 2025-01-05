@@ -1,5 +1,53 @@
 import { useState } from "react";
 
+const Filter = ({ filterPersons, setFilterPersons }) => {
+  return (
+    <div>
+      filter shown with
+      <input
+        value={filterPersons}
+        onChange={(e) => setFilterPersons(e.target.value)}
+      />
+    </div>
+  );
+};
+
+const PersonForm = ({ addName,newName,setNewName,newNumber,setNewNumber }) => {
+  return (
+    <form onSubmit={addName}>
+      <div>
+        name:{" "}
+        <input
+          value={newName}
+          placeholder="fill the text"
+          onChange={(e) => setNewName(e.target.value)}
+        />
+        <div>
+          number:{" "}
+          <input
+            value={newNumber}
+            placeholder="fill the number"
+            onChange={(e) => setNewNumber(e.target.value)}
+            type="number"
+          />
+        </div>
+      </div>
+      <div>
+        <button type="submit">add</button>
+      </div>
+    </form>
+  );
+};
+
+const Persons = ({showPersons})=>{
+  return(
+    showPersons.map((el) => (
+      <p key={el.id}>
+        {el.name} {el.number}
+      </p>
+    ))
+  )
+}
 const App = () => {
   const [persons, setPersons] = useState([
     { name: "Arto Hellas", number: "040-123456", id: 1 },
@@ -38,42 +86,20 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        filter shown with{" "}
-        <input
-          value={filterPersons}
-          onChange={(e) => setFilterPersons(e.target.value)}
-        />
-      </div>
-      <h2>add a new</h2>
-      <form onSubmit={addName}>
-        <div>
-          name:{" "}
-          <input
-            value={newName}
-            placeholder="fill the text"
-            onChange={(e) => setNewName(e.target.value)}
-          />
-          <div>
-            number:{" "}
-            <input
-              value={newNumber}
-              placeholder="fill the number"
-              onChange={(e) => setNewNumber(e.target.value)}
-              type="number"
-            />
-          </div>
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <Filter
+        filterPersons={filterPersons}
+        setFilterPersons={setFilterPersons}
+      />
+      <h2>Add a new</h2>
+      <PersonForm
+        addName={addName}
+        newName={newName}
+        setNewName={setNewName}
+        newNumber={newNumber}
+        setNewNumber={setNewNumber}
+      />
       <h2>Numbers</h2>
-      {showPersons.map((el) => (
-        <p key={el.id}>
-          {el.name} {el.number}
-        </p>
-      ))}
+      <Persons showPersons={showPersons}/>
     </div>
   );
 };
