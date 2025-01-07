@@ -1,5 +1,5 @@
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
+import axios from "axios";
 const Filter = ({ filterPersons, setFilterPersons }) => {
   return (
     <div>
@@ -12,7 +12,13 @@ const Filter = ({ filterPersons, setFilterPersons }) => {
   );
 };
 
-const PersonForm = ({ addName,newName,setNewName,newNumber,setNewNumber }) => {
+const PersonForm = ({
+  addName,
+  newName,
+  setNewName,
+  newNumber,
+  setNewNumber,
+}) => {
   return (
     <form onSubmit={addName}>
       <div>
@@ -39,26 +45,25 @@ const PersonForm = ({ addName,newName,setNewName,newNumber,setNewNumber }) => {
   );
 };
 
-const Persons = ({showPersons})=>{
-  return(
-    showPersons.map((el) => (
-      <p key={el.id}>
-        {el.name} {el.number}
-      </p>
-    ))
-  )
-}
+const Persons = ({ showPersons }) => {
+  return showPersons.map((el) => (
+    <p key={el.id}>
+      {el.name} {el.number}
+    </p>
+  ));
+};
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas", number: "040-123456", id: 1 },
-    { name: "Ada Lovelace", number: "39-44-5323523", id: 2 },
-    { name: "Dan Abramov", number: "12-43-234345", id: 3 },
-    { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
-  ]);
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
 
   const [filterPersons, setFilterPersons] = useState("");
+
+  useEffect(() => {
+    axios.get("http://localhost:3001/persons").then((response) => {
+      setPersons(response.data);
+    });
+  }, []);
 
   const addName = (e) => {
     e.preventDefault();
@@ -99,7 +104,7 @@ const App = () => {
         setNewNumber={setNewNumber}
       />
       <h2>Numbers</h2>
-      <Persons showPersons={showPersons}/>
+      <Persons showPersons={showPersons} />
     </div>
   );
 };
