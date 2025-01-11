@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+
 const Filter = ({ filterPersons, setFilterPersons }) => {
   return (
     <div>
@@ -53,7 +54,7 @@ const Persons = ({ showPersons }) => {
   ));
 };
 const App = () => {
-  const [persons, setPersons] = useState([])
+  const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
 
@@ -90,7 +91,7 @@ const App = () => {
       );
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h2>The Phonebook</h2>
       <Filter
         filterPersons={filterPersons}
         setFilterPersons={setFilterPersons}
