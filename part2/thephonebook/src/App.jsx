@@ -69,7 +69,7 @@ const App = () => {
   const addName = (e) => {
     e.preventDefault();
     if (newName) {
-      if (persons.find((item) => item.name === newName)) {
+      if (persons.find((el) => el.name === newName)) {
         alert(`${newName} is already added to phonebook`);
         return;
       }
@@ -91,7 +91,7 @@ const App = () => {
       );
   return (
     <div>
-      <h2>The Phonebook</h2>
+      <h2>Phonebook</h2>
       <Filter
         filterPersons={filterPersons}
         setFilterPersons={setFilterPersons}
