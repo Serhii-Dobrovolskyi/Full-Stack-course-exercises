@@ -65,7 +65,6 @@ const App = () => {
       setPersons(response.data);
     });
   }, []);
-
   const addName = (e) => {
     e.preventDefault();
     if (newName) {
@@ -78,7 +77,7 @@ const App = () => {
         number: newNumber,
         id: persons.length + 1,
       };
-
+      axios.post("http://localhost:3001/persons", newUser).then(resp=>console.log(resp))
       setPersons(persons.concat(newUser));
       setNewName("");
       setNewNumber("");
