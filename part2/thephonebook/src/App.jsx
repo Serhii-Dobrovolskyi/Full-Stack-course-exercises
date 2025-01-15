@@ -75,12 +75,12 @@ const App = () => {
       const newUser = {
         name: newName,
         number: newNumber,
-        id: persons.length + 1,
       };
-      axios.post("http://localhost:3001/persons", newUser).then(resp=>console.log(resp))
-      setPersons(persons.concat(newUser));
-      setNewName("");
-      setNewNumber("");
+      axios.post("http://localhost:3001/persons", newUser).then((response) => {
+        setPersons(persons.concat(response.data));
+        setNewName("");
+        setNewNumber("");
+      });
     }
   };
   const showPersons = !filterPersons

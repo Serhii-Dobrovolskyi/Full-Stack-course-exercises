@@ -23,12 +23,12 @@
     {
       "id": "d5f3",
       "content": "cvg fgf",
-      "important": false
+      "important": true
     },
     {
       "id": "b7cd",
       "content": "cf fgh f",
-      "important": true
+      "important": false
     }
   ]
 }
