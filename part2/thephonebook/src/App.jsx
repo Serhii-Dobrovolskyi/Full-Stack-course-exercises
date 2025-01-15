@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-// import axios from "axios";
 import personsServise from "./services/persons";
 
 const Filter = ({ filterPersons, setFilterPersons }) => {
@@ -47,10 +46,11 @@ const PersonForm = ({
   );
 };
 
-const Persons = ({ showPersons }) => {
+const Persons = ({ showPersons, deletePerson }) => {
   return showPersons.map((el) => (
     <p key={el.id}>
-      {el.name} {el.number}
+      {el.name} {el.number}{" "}
+      <button onClick={() => deletePerson(el.name,el.id)}>delete</button>
     </p>
   ));
 };
@@ -63,7 +63,7 @@ const App = () => {
 
   useEffect(() => {
     personsServise
-      .getAll()
+      .getAllPersons()
       .then((initialPersons) => setPersons(initialPersons));
   }, []);
   const addName = (e) => {
@@ -77,11 +77,21 @@ const App = () => {
         name: newName,
         number: newNumber,
       };
-      personsServise.create(newUser).then(returnedPerson => {
+      personsServise.createPerson(newUser).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson));
-      })
+      });
     }
   };
+
+  const deletePerson = (name, id) => {
+    if (window.confirm(`Delete ${name}`)) {
+      personsServise.deletePerson(id).then((deletedPerson) => {
+        setPersons(persons.filter((el) => el.id !== deletedPerson.id));
+      });
+    }
+    return;
+  };
+
   const showPersons = !filterPersons
     ? persons
     : persons.filter((el) =>
@@ -103,7 +113,7 @@ const App = () => {
         setNewNumber={setNewNumber}
       />
       <h2>Numbers</h2>
-      <Persons showPersons={showPersons} />
+      <Persons showPersons={showPersons} deletePerson={deletePerson} />
     </div>
   );
 };
