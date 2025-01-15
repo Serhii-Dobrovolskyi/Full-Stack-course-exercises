@@ -49,8 +49,8 @@ const PersonForm = ({
 const Persons = ({ showPersons, deletePerson }) => {
   return showPersons.map((el) => (
     <p key={el.id}>
-      {el.name} {el.number}{" "}
-      <button onClick={() => deletePerson(el.name,el.id)}>delete</button>
+      {el.name} {el.number}
+      <button onClick={() => deletePerson(el.name, el.id)}>delete</button>
     </p>
   ));
 };
@@ -69,20 +69,39 @@ const App = () => {
   const addName = (e) => {
     e.preventDefault();
     if (newName) {
-      if (persons.find((el) => el.name === newName)) {
-        alert(`${newName} is already added to phonebook`);
-        return;
-      }
       const newUser = {
         name: newName,
         number: newNumber,
       };
+      if (persons.find((el) => el.name === newName)) {
+        const originalObject = persons.find((el) => el.name === newName);
+        updatePerson(originalObject.id, newUser);
+        return;
+      }
       personsServise.createPerson(newUser).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson));
       });
+      setNewName("");
+      setNewNumber("");
     }
   };
-
+  const updatePerson = (id, newUser) => {
+    if (
+      window.confirm(
+        `${newName} is already added to phonebook, replace the old number with a new one?`
+      )
+    ) {
+      personsServise.updatePerson(id, newUser).then((updatedPerson) => {
+        setPersons(
+          persons.map((elem) =>
+            elem.id === updatedPerson.id ? updatedPerson : elem
+          )
+        );
+      });
+    }
+    setNewName("");
+    setNewNumber("");
+  };
   const deletePerson = (name, id) => {
     if (window.confirm(`Delete ${name}`)) {
       personsServise.deletePerson(id).then((deletedPerson) => {
@@ -91,7 +110,6 @@ const App = () => {
     }
     return;
   };
-
   const showPersons = !filterPersons
     ? persons
     : persons.filter((el) =>
