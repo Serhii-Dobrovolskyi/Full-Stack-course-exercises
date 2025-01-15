@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+// import axios from "axios";
+import personsServise from "./services/persons";
 
 const Filter = ({ filterPersons, setFilterPersons }) => {
   return (
@@ -61,9 +62,9 @@ const App = () => {
   const [filterPersons, setFilterPersons] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((response) => {
-      setPersons(response.data);
-    });
+    personsServise
+      .getAll()
+      .then((initialPersons) => setPersons(initialPersons));
   }, []);
   const addName = (e) => {
     e.preventDefault();
@@ -76,11 +77,9 @@ const App = () => {
         name: newName,
         number: newNumber,
       };
-      axios.post("http://localhost:3001/persons", newUser).then((response) => {
-        setPersons(persons.concat(response.data));
-        setNewName("");
-        setNewNumber("");
-      });
+      personsServise.create(newUser).then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson));
+      })
     }
   };
   const showPersons = !filterPersons
