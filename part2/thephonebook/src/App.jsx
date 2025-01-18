@@ -1,6 +1,14 @@
 import { useState, useEffect } from "react";
 import personsServise from "./services/persons";
 
+const Notification = ({ message }) => {
+  if (message === null) {
+    return null;
+  }
+
+  return <div className="success">{message}</div>;
+};
+
 const Filter = ({ filterPersons, setFilterPersons }) => {
   return (
     <div>
@@ -24,14 +32,14 @@ const PersonForm = ({
     <form onSubmit={addName}>
       <div>
         name:{" "}
-        <input
+        <input name="name"
           value={newName}
           placeholder="fill the text"
           onChange={(e) => setNewName(e.target.value)}
         />
         <div>
           number:{" "}
-          <input
+          <input name="number"
             value={newNumber}
             placeholder="fill the number"
             onChange={(e) => setNewNumber(e.target.value)}
@@ -59,6 +67,7 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
 
+  const [successMessage, setSuccessMessage] = useState(null);
   const [filterPersons, setFilterPersons] = useState("");
 
   useEffect(() => {
@@ -66,6 +75,7 @@ const App = () => {
       .getAllPersons()
       .then((initialPersons) => setPersons(initialPersons));
   }, []);
+
   const addName = (e) => {
     e.preventDefault();
     if (newName) {
@@ -73,18 +83,27 @@ const App = () => {
         name: newName,
         number: newNumber,
       };
-      if (persons.find((el) => el.name === newName)) {
-        const originalObject = persons.find((el) => el.name === newName);
-        updatePerson(originalObject.id, newUser);
+      
+      const person = persons.find((el) => el.name === newName)
+
+
+      if (person) {
+        updatePerson(person.id, newUser);
         return;
       }
+      
       personsServise.createPerson(newUser).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson));
       });
       setNewName("");
       setNewNumber("");
+      setSuccessMessage(`Added ${newUser.name}`);
+      setTimeout(() => {
+        setSuccessMessage(null);
+      }, 5000);
     }
   };
+
   const updatePerson = (id, newUser) => {
     if (
       window.confirm(
@@ -101,7 +120,12 @@ const App = () => {
     }
     setNewName("");
     setNewNumber("");
+    setSuccessMessage(`Added ${newUser.name}`);
+      setTimeout(() => {
+        setSuccessMessage(null);
+      }, 5000);
   };
+
   const deletePerson = (name, id) => {
     if (window.confirm(`Delete ${name}`)) {
       personsServise.deletePerson(id).then((deletedPerson) => {
@@ -110,14 +134,17 @@ const App = () => {
     }
     return;
   };
+
   const showPersons = !filterPersons
     ? persons
     : persons.filter((el) =>
         el.name.toLowerCase().includes(filterPersons.toLowerCase())
       );
+
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={successMessage} />
       <Filter
         filterPersons={filterPersons}
         setFilterPersons={setFilterPersons}

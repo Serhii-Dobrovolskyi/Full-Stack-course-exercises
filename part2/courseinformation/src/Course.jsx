@@ -6,22 +6,20 @@ const Part = ({ name, exercises }) => (
   </p>
 );
 
-const Content = ({ parts }) => {
-  return (
+const Content = ({ parts }) =>  (
     <div>
       {parts.map((el, id) => (
         <Part key={id} name={el.name} exercises={el.exercises} />
       ))}
     </div>
   );
-};
+
 const Total = ({ parts }) => (
   <b>total of {parts.reduce((acc, num) => acc + num.exercises, 0)} exercises</b>
 );
 
 
-const Course = ({ courses }) => {
-  return (
+const Course = ({ courses }) =>  (
     <>
       <h1>Web development curriculum</h1>
       {courses.map((course) => (
@@ -33,7 +31,6 @@ const Course = ({ courses }) => {
       ))}
     </>
   );
-};
 
 export default Course;
 
