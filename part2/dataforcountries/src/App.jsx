@@ -1,6 +1,6 @@
 
 function App() {
 
-  return <h1>test</h1>
+  return <h1>find counties</h1>
 }
 export default App
