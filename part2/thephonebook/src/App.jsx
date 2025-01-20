@@ -32,14 +32,16 @@ const PersonForm = ({
     <form onSubmit={addName}>
       <div>
         name:{" "}
-        <input name="name"
+        <input
+          name="name"
           value={newName}
           placeholder="fill the text"
           onChange={(e) => setNewName(e.target.value)}
         />
         <div>
           number:{" "}
-          <input name="number"
+          <input
+            name="number"
             value={newNumber}
             placeholder="fill the number"
             onChange={(e) => setNewNumber(e.target.value)}
@@ -62,6 +64,7 @@ const Persons = ({ showPersons, deletePerson }) => {
     </p>
   ));
 };
+
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
@@ -76,6 +79,18 @@ const App = () => {
       .then((initialPersons) => setPersons(initialPersons));
   }, []);
 
+  const resetData = () => {
+    setNewName("");
+    setNewNumber("");
+  };
+
+  const newUserAlert = (newUser) => {
+    setSuccessMessage(`Added ${newUser.name}`);
+    setTimeout(() => {
+      setSuccessMessage(null);
+    }, 5000);
+  };
+
   const addName = (e) => {
     e.preventDefault();
     if (newName) {
@@ -83,24 +98,19 @@ const App = () => {
         name: newName,
         number: newNumber,
       };
-      
-      const person = persons.find((el) => el.name === newName)
 
+      const person = persons.find((el) => el.name === newName);
 
       if (person) {
         updatePerson(person.id, newUser);
         return;
       }
-      
+
       personsServise.createPerson(newUser).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson));
       });
-      setNewName("");
-      setNewNumber("");
-      setSuccessMessage(`Added ${newUser.name}`);
-      setTimeout(() => {
-        setSuccessMessage(null);
-      }, 5000);
+      resetData();
+      newUserAlert(newUser);
     }
   };
 
@@ -117,13 +127,9 @@ const App = () => {
           )
         );
       });
+      newUserAlert(newUser);
     }
-    setNewName("");
-    setNewNumber("");
-    setSuccessMessage(`Added ${newUser.name}`);
-      setTimeout(() => {
-        setSuccessMessage(null);
-      }, 5000);
+    resetData();
   };
 
   const deletePerson = (name, id) => {
