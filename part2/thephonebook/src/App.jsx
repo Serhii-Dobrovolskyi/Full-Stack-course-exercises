@@ -1,12 +1,17 @@
 import { useState, useEffect } from "react";
 import personsServise from "./services/persons";
 
-const Notification = ({ message }) => {
+const NotificationSuccess = ({ message }) => {
   if (message === null) {
     return null;
   }
-
   return <div className="success">{message}</div>;
+};
+const NotificationFailure = ({ message }) => {
+  if (message === null) {
+    return null;
+  }
+  return <div className="failure">{message}</div>;
 };
 
 const Filter = ({ filterPersons, setFilterPersons }) => {
@@ -71,6 +76,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
 
   const [successMessage, setSuccessMessage] = useState(null);
+  const [failureMessage, setFailureMessage] = useState(null);
   const [filterPersons, setFilterPersons] = useState("");
 
   useEffect(() => {
@@ -88,6 +94,15 @@ const App = () => {
     setSuccessMessage(`Added ${newUser.name}`);
     setTimeout(() => {
       setSuccessMessage(null);
+    }, 5000);
+  };
+
+  const userIsRemovedAlert = (newUser) => {
+    setFailureMessage(
+      `Indormation of ${newUser.name} has already been removed from server`
+    );
+    setTimeout(() => {
+      setFailureMessage(null);
     }, 5000);
   };
 
@@ -120,14 +135,19 @@ const App = () => {
         `${newName} is already added to phonebook, replace the old number with a new one?`
       )
     ) {
-      personsServise.updatePerson(id, newUser).then((updatedPerson) => {
-        setPersons(
-          persons.map((elem) =>
-            elem.id === updatedPerson.id ? updatedPerson : elem
-          )
-        );
-      });
-      newUserAlert(newUser);
+      personsServise
+        .updatePerson(id, newUser)
+        .then((updatedPerson) => {
+          setPersons(
+            persons.map((elem) =>
+              elem.id === updatedPerson.id ? updatedPerson : elem
+            )
+          );
+          newUserAlert(newUser);
+        })
+        .catch((err) => {
+          userIsRemovedAlert(newUser);
+        });
     }
     resetData();
   };
@@ -136,6 +156,8 @@ const App = () => {
     if (window.confirm(`Delete ${name}`)) {
       personsServise.deletePerson(id).then((deletedPerson) => {
         setPersons(persons.filter((el) => el.id !== deletedPerson.id));
+      }).catch((err) => {
+        userIsRemovedAlert(newUser);
       });
     }
     return;
@@ -150,7 +172,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={successMessage} />
+      <NotificationSuccess message={successMessage} />
+      <NotificationFailure message={failureMessage} />
       <Filter
         filterPersons={filterPersons}
         setFilterPersons={setFilterPersons}

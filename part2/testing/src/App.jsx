@@ -7,8 +7,10 @@ const App = () => {
   const [newNote, setNewNote] = useState("");
   const [showAll, setShowAll] = useState(false);
 
+  const baseUrl = import.meta.env.VITE_BASE_URL || 'http://localhost:3001'
+
   useEffect(() => {
-    axios.get("http://localhost:3001/notes").then((response) => {
+    axios.get(`${baseUrl}/notes`).then((response) => {
       setNotes(response.data);
     });
   }, []);
@@ -20,7 +22,7 @@ const App = () => {
       important: Math.random() > 0.5,
     };
 
-    axios.post("http://localhost:3001/notes", noteObject).then((response) => {
+    axios.post(`${baseUrl}/notes`, noteObject).then((response) => {
       setNotes(notes.concat(response.data));
       setNewNote("");
     });
@@ -33,7 +35,7 @@ const App = () => {
   const notesToShow = showAll ? notes : notes.filter((note) => note.important);
 
   const toggleImportance = (id) => {
-    const url = `http://localhost:3001/notes/${id}`;
+    const url = `${baseUrl}/notes/${id}`;
     const note = notes.find((i) => i.id === id);
     const changedNote = { ...note, important: !note.important };
 
