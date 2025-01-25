@@ -21,6 +21,7 @@ const DataOfTheCountry = ({ name, capital, area, languages, flag }) => {
 const App = () => {
   const [value, setValue] = useState("");
   const [allCountries, setAllCountries] = useState([]);
+  const [isShowDetails, setIsShowDetails] = useState(false)
 
   useEffect(() => {
     axios
@@ -34,7 +35,6 @@ const App = () => {
         i.name.common.toLowerCase().includes(value.toLowerCase())
       )
     : [];
-
   return (
     <div>
       <p>
@@ -51,7 +51,7 @@ const App = () => {
       {
         filteredCountries.length <= 10 && filteredCountries.length > 1 && (
           filteredCountries.map((i) => (
-            <p key={i.name.common}>{i.name.common} <button onClick={()=>console.log(i)}>show</button></p>
+            <p key={i.name.common}>{i.name.common} <button onClick={setIsShowDetails(!isShowDetails)}>show</button></p>
           ))
         )
       }
