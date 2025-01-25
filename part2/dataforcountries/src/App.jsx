@@ -51,7 +51,7 @@ const App = () => {
       {
         filteredCountries.length <= 10 && filteredCountries.length > 1 && (
           filteredCountries.map((i) => (
-            <p key={i.name.common}>{i.name.common}</p>
+            <p key={i.name.common}>{i.name.common} <button>show</button></p>
           ))
         )
       }
