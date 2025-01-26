@@ -11,12 +11,6 @@ const Notification = ({ message }) => {
     </div>
   );
 };
-// const NotificationFailure = ({ message }) => {
-//   if (message === null) {
-//     return null;
-//   }
-//   return <div className="failure">{message}</div>;
-// };
 
 const Filter = ({ filterPersons, setFilterPersons }) => {
   return (
