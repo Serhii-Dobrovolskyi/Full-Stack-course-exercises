@@ -172,7 +172,6 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <Notification message={message} />
-      {/* <NotificationFailure message={message} /> */}
       <Filter
         filterPersons={filterPersons}
         setFilterPersons={setFilterPersons}
