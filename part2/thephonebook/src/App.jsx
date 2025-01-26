@@ -89,7 +89,7 @@ const App = () => {
   };
 
   const newUserAlert = (newUser) => {
-    setMessage({ type: "success", text: "successText" });
+    setMessage({ type: "success", text: `Added ${newUser}`});
     setTimeout(() => {
       setMessage(null);
     }, 2000);
