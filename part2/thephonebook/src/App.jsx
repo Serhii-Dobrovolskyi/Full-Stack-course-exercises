@@ -96,7 +96,7 @@ const App = () => {
   };
 
   const userIsRemovedAlert = (newUser) => {
-    setMessage({ type: "fail", text: "failText" });
+    setMessage({ type: "failure", text: `Information of ${newUser} has already been removed from server` });
     setTimeout(() => {
       setMessage(null);
     }, 2000);
