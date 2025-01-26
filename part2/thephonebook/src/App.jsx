@@ -1,18 +1,22 @@
 import { useState, useEffect } from "react";
 import personsServise from "./services/persons";
 
-const NotificationSuccess = ({ message }) => {
+const Notification = ({ message }) => {
   if (message === null) {
     return null;
   }
-  return <div className="success">{message}</div>;
+  return (
+    <div className={message.type === "success" ? "success" : "failure"}>
+      {message.text}
+    </div>
+  );
 };
-const NotificationFailure = ({ message }) => {
-  if (message === null) {
-    return null;
-  }
-  return <div className="failure">{message}</div>;
-};
+// const NotificationFailure = ({ message }) => {
+//   if (message === null) {
+//     return null;
+//   }
+//   return <div className="failure">{message}</div>;
+// };
 
 const Filter = ({ filterPersons, setFilterPersons }) => {
   return (
@@ -75,8 +79,11 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
 
-  const [successMessage, setSuccessMessage] = useState(null);
-  const [failureMessage, setFailureMessage] = useState(null);
+  // const [successMessage, setSuccessMessage] = useState(null);
+  // const [failureMessage, setFailureMessage] = useState(null);
+
+  const [message, setMessage] = useState(null);
+
   const [filterPersons, setFilterPersons] = useState("");
 
   useEffect(() => {
@@ -91,19 +98,17 @@ const App = () => {
   };
 
   const newUserAlert = (newUser) => {
-    setSuccessMessage(`Added ${newUser.name}`);
+    setMessage({ type: "success", text: "successText" });
     setTimeout(() => {
-      setSuccessMessage(null);
-    }, 5000);
+      setMessage(null);
+    }, 2000);
   };
 
   const userIsRemovedAlert = (newUser) => {
-    setFailureMessage(
-      `Indormation of ${newUser.name} has already been removed from server`
-    );
+    setMessage({ type: "fail", text: "failText" });
     setTimeout(() => {
-      setFailureMessage(null);
-    }, 5000);
+      setMessage(null);
+    }, 2000);
   };
 
   const addName = (e) => {
@@ -154,11 +159,14 @@ const App = () => {
 
   const deletePerson = (name, id) => {
     if (window.confirm(`Delete ${name}`)) {
-      personsServise.deletePerson(id).then((deletedPerson) => {
-        setPersons(persons.filter((el) => el.id !== deletedPerson.id));
-      }).catch((err) => {
-        userIsRemovedAlert(newUser);
-      });
+      personsServise
+        .deletePerson(id)
+        .then((deletedPerson) => {
+          setPersons(persons.filter((el) => el.id !== deletedPerson.id));
+        })
+        .catch((err) => {
+          userIsRemovedAlert(newUser);
+        });
     }
     return;
   };
@@ -172,8 +180,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <NotificationSuccess message={successMessage} />
-      <NotificationFailure message={failureMessage} />
+      <Notification message={message} />
+      {/* <NotificationFailure message={message} /> */}
       <Filter
         filterPersons={filterPersons}
         setFilterPersons={setFilterPersons}

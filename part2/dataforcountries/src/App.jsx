@@ -21,7 +21,6 @@ const DataOfTheCountry = ({ name, capital, area, languages, flag }) => {
 const App = () => {
   const [value, setValue] = useState("");
   const [allCountries, setAllCountries] = useState([]);
-  const [isShowDetails, setIsShowDetails] = useState(false)
 
   useEffect(() => {
     axios
@@ -35,6 +34,7 @@ const App = () => {
         i.name.common.toLowerCase().includes(value.toLowerCase())
       )
     : [];
+  // console.log(allCountries);
   return (
     <div>
       <p>
@@ -45,23 +45,22 @@ const App = () => {
           placeholder="Enter country..."
         />
       </p>
-      {
-        filteredCountries.length > 10 && <p>Too many matches, specify another filter</p>
-      }
-      {
-        filteredCountries.length <= 10 && filteredCountries.length > 1 && (
-          filteredCountries.map((i) => (
-            <p key={i.name.common}>{i.name.common} <button>show</button></p>
-          ))
-        )
-      }
+      {filteredCountries.length > 10 && (
+        <p>Too many matches, specify another filter</p>
+      )}
+      {filteredCountries.length <= 10 &&
+        filteredCountries.length > 1 &&
+        filteredCountries.map((i) => (
+          <p key={i.name.common}>{i.name.common} <button onClick={()=>setValue(i.name.common)}>show</button></p>
+
+        ))}
       {filteredCountries.length === 1 && (
         <DataOfTheCountry
           name={filteredCountries[0].name.common}
           capital={filteredCountries[0].capital}
           area={filteredCountries[0].area}
           languages={filteredCountries[0].languages}
-          flag = {filteredCountries[0].flags.png}
+          flag={filteredCountries[0].flags.png}
         />
       )}
     </div>
