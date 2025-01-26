@@ -73,9 +73,6 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
 
-  // const [successMessage, setSuccessMessage] = useState(null);
-  // const [failureMessage, setFailureMessage] = useState(null);
-
   const [message, setMessage] = useState(null);
 
   const [filterPersons, setFilterPersons] = useState("");
