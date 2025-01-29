@@ -34,7 +34,6 @@ const App = () => {
         i.name.common.toLowerCase().includes(value.toLowerCase())
       )
     : [];
-  // console.log(allCountries);
   return (
     <div>
       <p>
