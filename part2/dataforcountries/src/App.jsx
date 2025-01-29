@@ -3,10 +3,12 @@ import axios from "axios";
 
 const DataOfTheCountry = ({ name, capital, area, languages, flag }) => {
   const [weatherData, setWeatherData] = useState({});
+  const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
+
   useEffect(() => {
     axios
       .get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${capital}&appid=464da8614c0896342688a7f312363302&units=metric`
+        `https://api.openweathermap.org/data/2.5/weather?q=${capital}&&APPID=${API_KEY}&units=metric`
       )
       .then((response) => setWeatherData(response.data))
       .catch(() => console.log("Not found"));
