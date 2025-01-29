@@ -2,6 +2,16 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const DataOfTheCountry = ({ name, capital, area, languages, flag }) => {
+  const [weatherData, setWeatherData] = useState({});
+  useEffect(() => {
+    axios
+      .get(
+        `https://api.openweathermap.org/data/2.5/weather?q=${capital}&appid=464da8614c0896342688a7f312363302&units=metric`
+      )
+      .then((response) => setWeatherData(response.data))
+      .catch(() => console.log("Not found"));
+  }, []);
+  const weatherIcon = weatherData.weather;
   return (
     <>
       <h2>{name}</h2>
@@ -14,6 +24,15 @@ const DataOfTheCountry = ({ name, capital, area, languages, flag }) => {
         ))}
       </ul>
       <img src={flag} alt="#" />
+      <h3>Weather in {capital}</h3>
+      <p>temperature {weatherData?.main?.temp} Celcius</p>
+      {weatherIcon && (
+        <img
+          src={`https://openweathermap.org/img/wn/${weatherIcon[0].icon}@2x.png`}
+          alt="#"
+        />
+      )}
+      <p>wind {weatherData?.wind?.speed} m/s</p>
     </>
   );
 };
@@ -50,8 +69,10 @@ const App = () => {
       {filteredCountries.length <= 10 &&
         filteredCountries.length > 1 &&
         filteredCountries.map((i) => (
-          <p key={i.name.common}>{i.name.common} <button onClick={()=>setValue(i.name.common)}>show</button></p>
-
+          <p key={i.name.common}>
+            {i.name.common}{" "}
+            <button onClick={() => setValue(i.name.common)}>show</button>
+          </p>
         ))}
       {filteredCountries.length === 1 && (
         <DataOfTheCountry
