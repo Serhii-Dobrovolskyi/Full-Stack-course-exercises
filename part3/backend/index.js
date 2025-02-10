@@ -1,4 +1,5 @@
-const http = require('http')
+const express = require('express')
+const app = express()
 
 let notes = [
    {
@@ -15,13 +16,26 @@ let notes = [
       id: "3",
       content: "GET and POST are the most important methods of HTTP protocol",
       important: true
+   },
+   {
+      id: "4",
+      content: "Browser can execute only JavaScript",
+      important: false
+   },
+   {
+      id: "5",
+      content: "GET and POST are the most important methods of HTTP protocol",
+      important: true
    }
+   
 ]
 
+app.get('/',(request,response)=>{
+   response.send('<h1>Hello World!</h1>')
+})
 
-const app = http.createServer((request, response) => {
-   response.writeHead(200, { 'Content-Type': 'application/json'  })
-   response.end(JSON.stringify(notes))
+app.get('/api/notes',(request,response)=>{
+   response.json(notes)
 })
 
 const PORT = 3002
