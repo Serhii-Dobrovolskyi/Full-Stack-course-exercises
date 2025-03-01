@@ -1,7 +1,10 @@
 const express = require('express')
 const app = express()
+<<<<<<< HEAD
 
 app.use(express.json())
+=======
+>>>>>>> cc4b54d13d34d8eb13cc5f0bf349582b54e12ce9
 
 let notes = [
    {
