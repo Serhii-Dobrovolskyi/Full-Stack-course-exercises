@@ -67,7 +67,7 @@ app.post('/api/persons', (request, response) => {
       return response.status(400).json({ error: 'name must be unique' })
    }
    const person = {
-      id: Math.random() * 1000,
+      id: Math.random() * 100,
       name: body.name,
       number: body.number,
    }
