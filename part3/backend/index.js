@@ -25,12 +25,25 @@ let persons = [
       "number": "39-23-6423122"
    }
 
+
 ]
 
 app.get('/api/persons', (request, response) => {
-   response.json(persons)
+   if (persons) {
+      response.json(persons)
+   } else {
+      response.status(404).end()
+   }
 })
 
-const PORT = 3002
+app.get('/api/info', (request, response) => {
+   if (persons) {
+      const date = new Date().toString()
+      response.send(`<p>Phonebook has info for ${persons.length} people</p><p>${new Date().toString()}</p>`)
+   } else {
+      response.status(404).end()
+   }
+})
+
+const PORT = 3001
 app.listen(PORT)
-console.log(`Server running on port ${PORT}`)
