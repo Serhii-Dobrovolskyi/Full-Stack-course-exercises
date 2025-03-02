@@ -39,7 +39,7 @@ app.get('/api/persons', (request, response) => {
 app.get('/info', (request, response) => {
    if (persons) {
       const date = new Date().toString()
-      response.send(`<p>Phonebook has info for ${persons.length} people</p><p>${new Date().toString()}</p>`)
+      response.send(`<p>Phonebook has info for ${persons.length} people</p><p>${date}</p>`)
    } else {
       response.status(404).end()
    }
@@ -59,6 +59,20 @@ app.delete('/api/persons/:id', (request, response) => {
    const id = request.params.id
    persons = persons.filter(person => person.id === id)
    response.status(204).end('No content')
+})
+
+app.post('/api/persons', (request, response) => {
+   const body = request.body
+   if (!body.name || !body.number) {
+      return response.status(400).json({ error: 'name must be unique' })
+   }
+   const person = {
+      id: Math.random() * 1000,
+      name: body.name,
+      number: body.number,
+   }
+   persons.concat(person)
+   response.json(person)
 })
 
 const PORT = 3001
