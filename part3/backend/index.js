@@ -1,7 +1,7 @@
 const express = require('express')
-const app = express()
+const morgan = require('morgan')
 
-app.use(express.json())
+const app = express()
 
 let persons = [
    {
@@ -27,6 +27,10 @@ let persons = [
 
 
 ]
+
+app.use(express.json())
+app.use(morgan('tiny'))
+app
 
 app.get('/api/persons', (request, response) => {
    if (persons) {
