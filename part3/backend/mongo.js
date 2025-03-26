@@ -25,11 +25,18 @@ const note = new Note({
    number: process.argv[4],
 })
 
-note.save().then(result => {
-   console.log(`added ${note.name} number ${note.number} to phonebook`)
-   mongoose.connection.close()
-})
-Note.find({}).then(result => {
-   result.forEach(note => console.log(`phonebook ${note.name} ${note.number}`))
-   mongoose.connection.close()
-})
+// note.save().then(result => {
+//    console.log(`added ${note.name} number ${note.number} to phonebook`)
+//    mongoose.connection.close()
+// })
+if (process.argv.length > 3){
+   note.save().then(result => {
+      console.log(`added ${note.name} number ${note.number} to phonebook`)
+      mongoose.connection.close()
+   })
+}else{
+   Note.find({}).then(result => {
+      result.forEach(note => console.log(`phonebook ${note.name} ${note.number}`))
+      mongoose.connection.close()
+   })
+}
