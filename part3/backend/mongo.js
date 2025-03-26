@@ -25,10 +25,6 @@ const note = new Note({
    number: process.argv[4],
 })
 
-// note.save().then(result => {
-//    console.log(`added ${note.name} number ${note.number} to phonebook`)
-//    mongoose.connection.close()
-// })
 if (process.argv.length > 3){
    note.save().then(result => {
       console.log(`added ${note.name} number ${note.number} to phonebook`)
