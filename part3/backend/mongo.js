@@ -14,18 +14,18 @@ mongoose.set('strictQuery', false)
 mongoose.connect(url)
 
 const noteSchema = new mongoose.Schema({
-   content: String,
-   important: Boolean,
+   name: String,
+   number: String,
 })
 
 const Note = mongoose.model('Note', noteSchema)
 
 const note = new Note({
-   content: 'HTML is easy',
-   important: true,
+   name: process.argv[3],
+   number: process.argv[4],
 })
 
 note.save().then(result => {
-   console.log('note saved!')
+   console.log(`added ${note.name} number ${note.number} to phonebook`)
    mongoose.connection.close()
 })
