@@ -1,6 +1,19 @@
 const express = require('express')
 const morgan = require('morgan')
 const app = express()
+const mongoose = require('mongoose')
+
+const password = process.argv[2]
+const url = `mongodb+srv://Serhii:${password}@cluster0.crciu.mongodb.net/noteApp?retryWrites=true&w=majority&appName=Cluster0`
+mongoose.set('strictQuery', false)
+
+mongoose.connect(url)
+
+const personSchema = new mongoose.Schema({
+   name: String,
+   number: String,
+})
+const Person = mongoose.model('Note', personSchema)
 
 let persons = [
    {
@@ -32,11 +45,9 @@ app.use(morgan('tiny'))
 app
 
 app.get('/api/persons', (request, response) => {
-   if (persons) {
-      response.json(persons)
-   } else {
-      response.status(404).end()
-   }
+   Person.find({}).then(notes => {
+      response.json(notes)
+    })
 })
 
 app.get('/info', (request, response) => {
