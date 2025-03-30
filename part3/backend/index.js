@@ -14,6 +14,13 @@ const personSchema = new mongoose.Schema({
    number: String,
 })
 const Person = mongoose.model('Note', personSchema)
+personSchema.set('toJSON', {
+   transform: (document, returnedObject) => {
+      returnedObject.id = returnedObject._id.toString()
+      delete returnedObject._id
+      delete returnedObject.__v
+   }
+})
 
 let persons = [
    {
@@ -47,7 +54,7 @@ app
 app.get('/api/persons', (request, response) => {
    Person.find({}).then(notes => {
       response.json(notes)
-    })
+   })
 })
 
 app.get('/info', (request, response) => {
@@ -75,7 +82,7 @@ app.delete('/api/persons/:id', (request, response) => {
    response.status(204).end('No content')
 })
 
-morgan.token('body',(request)=>JSON.stringify(request.body))
+morgan.token('body', (request) => JSON.stringify(request.body))
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
 app.post('/api/persons', (request, response) => {
@@ -94,5 +101,5 @@ app.post('/api/persons', (request, response) => {
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+   console.log(`Server running on port ${PORT}`)
 })
