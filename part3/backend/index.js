@@ -86,13 +86,15 @@ app.post('/api/persons', (request, response) => {
    if (!body.name || !body.number) {
       return response.status(400).json({ error: 'name must be unique' })
    }
-   const person = {
-      id: Math.random() * 100,
+   const person = new Person({
       name: body.name,
       number: body.number,
-   }
-   persons.concat(person)
-   response.json(person)
+   })
+   // persons.concat(person)
+   // response.json(person)
+   person.save().then(savedPerson => {
+      response.json(savedPerson)
+   })
 })
 const PORT = process.env.PORT
 // const PORT = process.env.PORT || 3001
