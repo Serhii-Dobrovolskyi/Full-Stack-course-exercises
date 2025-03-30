@@ -1,46 +1,47 @@
+require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const app = express()
-const mongoose = require('mongoose')
 
-const password = process.argv[2]
-const url = `mongodb+srv://Serhii:${password}@cluster0.crciu.mongodb.net/phonebookApp?retryWrites=true&w=majority&appName=Cluster0`
-mongoose.set('strictQuery', false)
-
-mongoose.connect(url)
-
-const personSchema = new mongoose.Schema({
-   name: String,
-   number: String,
-})
-const Person = mongoose.model('Person', personSchema)
-personSchema.set('toJSON', {
-   transform: (document, returnedObject) => {
-      returnedObject.id = returnedObject._id.toString()
-      delete returnedObject._id
-      delete returnedObject.__v
-   }
-})
-
-let persons = [
-   {
-      "id": "1",
-      "name": "Arto Hellas",
-      "number": "040-123456"
-   },
-   {
-      "id": "2",
-      "name": "Ada Lovelace",
-      "number": "39-44-5323523"
-   },
-   {
-      "id": "3",
-      "name": "Dan Abramov",
-      "number": "12-43-234345"
-   },
+const Person = require('./models/person')
+// const moggoUrl = process.env.MONGODB_URI
+// const password = process.argv[2]
+// const url = `mongodb+srv://Serhii:${password}@cluster0.crciu.mongodb.net/phonebookApp?retryWrites=true&w=majority&appName=Cluster0`
 
 
-]
+
+// const personSchema = new mongoose.Schema({
+//    name: String,
+//    number: String,
+// })
+// const Person = mongoose.model('Person', personSchema)
+// personSchema.set('toJSON', {
+//    transform: (document, returnedObject) => {
+//       returnedObject.id = returnedObject._id.toString()
+//       delete returnedObject._id
+//       delete returnedObject.__v
+//    }
+// })
+
+// let persons = [
+//    {
+//       "id": "1",
+//       "name": "Arto Hellas",
+//       "number": "040-123456"
+//    },
+//    {
+//       "id": "2",
+//       "name": "Ada Lovelace",
+//       "number": "39-44-5323523"
+//    },
+//    {
+//       "id": "3",
+//       "name": "Dan Abramov",
+//       "number": "12-43-234345"
+//    },
+
+
+// ]
 app.use(express.static('dist'))
 app.use(express.json())
 app.use(morgan('tiny'))
@@ -93,8 +94,8 @@ app.post('/api/persons', (request, response) => {
    persons.concat(person)
    response.json(person)
 })
-
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
+// const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
    console.log(`Server running on port ${PORT}`)
 })
