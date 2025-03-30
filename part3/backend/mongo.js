@@ -7,7 +7,7 @@ if (process.argv.length < 3) {
 
 const password = process.argv[2]
 
-const url = `mongodb+srv://Serhii:${password}@cluster0.crciu.mongodb.net/noteApp?retryWrites=true&w=majority&appName=Cluster0`
+const url = `mongodb+srv://Serhii:${password}@cluster0.crciu.mongodb.net/phonebookApp?retryWrites=true&w=majority&appName=Cluster0`
 
 mongoose.set('strictQuery', false)
 
@@ -18,7 +18,7 @@ const personSchema = new mongoose.Schema({
    number: String,
 })
 
-const Person = mongoose.model('Note', personSchema)
+const Person = mongoose.model('Person', personSchema)
 
 const person = new Person({
    name: process.argv[3],
