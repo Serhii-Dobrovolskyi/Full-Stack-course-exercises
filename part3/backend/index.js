@@ -4,6 +4,7 @@ const morgan = require('morgan')
 const app = express()
 
 const Person = require('./models/person')
+const person = require('./models/person')
 // const moggoUrl = process.env.MONGODB_URI
 // const password = process.argv[2]
 // const url = `mongodb+srv://Serhii:${password}@cluster0.crciu.mongodb.net/phonebookApp?retryWrites=true&w=majority&appName=Cluster0`
@@ -92,6 +93,22 @@ app.delete('/api/persons/:id', (request, response, next) => {
    // response.status(204).end('No content')
    Person.findByIdAndDelete(request.params.id)
       .then(result => response.status(204).end())
+      .catch(error => next(error))
+})
+
+app.put('/api/persons/:id', (request, response, next) => {
+   const { name, number } = request.body
+   Person.findById(request.params.id)
+      .then(person => {
+         if (!person) {
+            return response.status(404).end()
+         }
+         person.name = name
+         person.number = number
+         return person.save().then((updatedPerson) => {
+            response.json(updatedPerson)
+         })
+      })
       .catch(error => next(error))
 })
 
