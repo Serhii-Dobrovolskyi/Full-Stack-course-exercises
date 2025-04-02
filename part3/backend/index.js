@@ -66,12 +66,15 @@ app.get('/api/persons', (request, response) => {
 })
 
 app.get('/info', (request, response) => {
-   if (persons) {
-      const date = new Date().toString()
-      response.send(`<p>Phonebook has info for ${persons.length} people</p><p>${date}</p>`)
-   } else {
-      response.status(404).end()
-   }
+   Person.find({}).then(persons => {
+      if (persons) {
+         const date = new Date().toString()
+         response.send(`<p>Phonebook has info for ${persons.length} people</p><p>${date}</p>`)
+      } else {
+         response.status(404).end()
+      }
+   })
+
 })
 
 app.get('/api/persons/:id', (request, response) => {
@@ -134,7 +137,7 @@ app.post('/api/persons', (request, response) => {
 const unknownEndpoint = (request, response) => {
    response.status(404).send({ error: 'unknown endpoint' })
 }
-
+console.log(Person)
 app.use(unknownEndpoint)
 app.use(errorHandler)
 
