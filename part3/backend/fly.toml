@@ -1,20 +1,20 @@
-# fly.toml app configuration file generated for backend-wandering-shape-1773 on 2025-03-17T21:34:56+02:00
+# fly.toml app configuration file generated for backend-sparkling-star-3950 on 2025-04-06T23:33:21+03:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'backend-wandering-shape-1773'
+app = 'backend-sparkling-star-3950'
 primary_region = 'arn'
 
 [build]
 
 [env]
-  PORT = "3001" # add this
+  PORT = '3001'
 
 [http_service]
-  internal_port = 3001
+  internal_port = 3000
   force_https = true
-  auto_stop_machines = true
+  auto_stop_machines = 'stop'
   auto_start_machines = true
   min_machines_running = 0
   processes = ['app']
