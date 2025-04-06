@@ -48,7 +48,6 @@ const PersonForm = ({
             value={newNumber}
             placeholder="fill the number"
             onChange={(e) => setNewNumber(e.target.value)}
-            type="number"
           />
         </div>
       </div>
