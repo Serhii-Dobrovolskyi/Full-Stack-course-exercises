@@ -4,7 +4,6 @@ const morgan = require('morgan')
 const app = express()
 
 const Person = require('./models/person')
-const person = require('./models/person')
 // const moggoUrl = process.env.MONGODB_URI
 // const password = process.argv[2]
 // const url = `mongodb+srv://Serhii:${password}@cluster0.crciu.mongodb.net/phonebookApp?retryWrites=true&w=majority&appName=Cluster0`
@@ -49,6 +48,8 @@ const errorHandler = (error, request, response, next) => {
 
    if (error.name === 'CastError') {
       return response.status(400).send({ error: 'malformatted id' })
+   } else if (error.name === 'ValidationError') {
+      return response.status(400).json({ error: error.message })
    }
 
    next(error)
@@ -120,18 +121,18 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :b
 
 app.post('/api/persons', (request, response) => {
    const body = request.body
-   if (!body.name || !body.number) {
-      return response.status(400).json({ error: 'name must be unique' })
-   }
+   // if (!body.name || !body.number) {
+   //    return response.status(400).json({ error: 'name must be unique' })
+   // }
    const person = new Person({
       name: body.name,
       number: body.number,
    })
    // persons.concat(person)
    // response.json(person)
-   person.save().then(savedPerson => {
-      response.json(savedPerson)
-   })
+   person.save()
+      .then(savedPerson => response.json(savedPerson))
+      .catch(error => next(error))
 })
 
 const unknownEndpoint = (request, response) => {
@@ -141,7 +142,7 @@ console.log(Person)
 app.use(unknownEndpoint)
 app.use(errorHandler)
 
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
    console.log(`Server running on port ${PORT}`)
 })
