@@ -89,14 +89,17 @@ const App = () => {
   };
 
   const newUserAlert = (newUser) => {
-    setMessage({ type: "success", text: `Added ${newUser}`});
+    setMessage({ type: "success", text: `Added ${newUser}` });
     setTimeout(() => {
       setMessage(null);
     }, 2000);
   };
 
   const userIsRemovedAlert = (newUser) => {
-    setMessage({ type: "failure", text: `Information of ${newUser} has already been removed from server` });
+    setMessage({
+      type: "failure",
+      text: `Information of ${newUser} has already been removed from server`,
+    });
     setTimeout(() => {
       setMessage(null);
     }, 2000);
@@ -105,6 +108,8 @@ const App = () => {
   const addName = (e) => {
     e.preventDefault();
     if (newName) {
+      if (newName.length < 3) {
+      }
       const newUser = {
         name: newName,
         number: newNumber,
@@ -117,11 +122,20 @@ const App = () => {
         return;
       }
 
-      personsServise.createPerson(newUser).then((returnedPerson) => {
-        setPersons(persons.concat(returnedPerson));
-      });
-      resetData();
-      newUserAlert(newUser);
+      personsServise
+        .createPerson(newUser)
+        .then((returnedPerson) => {
+          setPersons(persons.concat(returnedPerson));
+          resetData();
+          newUserAlert(newUser);
+        })
+        .catch((error) => {
+          const errMsg = error.response?.data?.error || "Something went wrong";
+          setMessage({ type: "failure", text: errMsg });
+          setTimeout(() => {
+            setMessage(null);
+          }, 4000);
+        });
     }
   };
 
