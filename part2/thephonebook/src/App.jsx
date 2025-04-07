@@ -87,18 +87,8 @@ const App = () => {
     setNewNumber("");
   };
 
-  const newUserAlert = (newUser) => {
-    setMessage({ type: "success", text: `Added ${newUser}` });
-    setTimeout(() => {
-      setMessage(null);
-    }, 2000);
-  };
-
-  const userIsRemovedAlert = (newUser) => {
-    setMessage({
-      type: "failure",
-      text: `Information of ${newUser} has already been removed from server`,
-    });
+  const alertMessage = (type, text) => {
+    setMessage({ type, text });
     setTimeout(() => {
       setMessage(null);
     }, 2000);
@@ -107,8 +97,6 @@ const App = () => {
   const addName = (e) => {
     e.preventDefault();
     if (newName) {
-      if (newName.length < 3) {
-      }
       const newUser = {
         name: newName,
         number: newNumber,
@@ -126,14 +114,11 @@ const App = () => {
         .then((returnedPerson) => {
           setPersons(persons.concat(returnedPerson));
           resetData();
-          newUserAlert(newUser);
+          alertMessage("success", `Added ${newName}`);
         })
         .catch((error) => {
           const errMsg = error.response?.data?.error || "Something went wrong";
-          setMessage({ type: "failure", text: errMsg });
-          setTimeout(() => {
-            setMessage(null);
-          }, 4000);
+          alertMessage("failure", errMsg);
         });
     }
   };
@@ -152,10 +137,10 @@ const App = () => {
               elem.id === updatedPerson.id ? updatedPerson : elem
             )
           );
-          newUserAlert(newUser);
+          alertMessage("success", `${newName} successfully updated`);
         })
         .catch((err) => {
-          userIsRemovedAlert(newUser);
+          alertMessage("failure", "Something went wrong");
         });
     }
     resetData();
@@ -167,9 +152,13 @@ const App = () => {
         .deletePerson(id)
         .then((deletedPerson) => {
           setPersons(persons.filter((el) => el.id !== deletedPerson.id));
+          alertMessage(
+            "failure",
+            `Information of ${name} has already been removed from server`
+          );
         })
         .catch((err) => {
-          userIsRemovedAlert(newUser);
+          alertMessage("failure", "Something went wrong");
         });
     }
     return;
