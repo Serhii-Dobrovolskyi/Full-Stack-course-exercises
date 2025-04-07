@@ -1,15 +1,12 @@
-# fly.toml app configuration file generated for backend-sparkling-star-3950 on 2025-04-06T23:33:21+03:00
+# fly.toml app configuration file generated for backend-autumn-glitter-5906 on 2025-04-07T10:07:51+03:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'backend-sparkling-star-3950'
+app = 'backend-autumn-glitter-5906'
 primary_region = 'arn'
 
 [build]
-
-[env]
-  PORT = '3001'
 
 [http_service]
   internal_port = 3000
