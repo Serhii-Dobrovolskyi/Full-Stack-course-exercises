@@ -1,10 +1,10 @@
 
-GET http://localhost:3003/api/blogs
-# Content-Type: application/json
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
 
-# {
-#    "title": "testTitle",
-#    "author": "testAuthor",
-#    "url": "testUrl",
-#    "likes": 5
-# }
+{
+   "title": "testTitle",
+   "author": "testAuthor",
+   "url": "testUrl",
+   "likes": 5
+}
