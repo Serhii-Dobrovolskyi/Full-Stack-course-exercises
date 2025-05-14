@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=production node index.js",
-    "dev": "NODE_ENV=development node --watch index.js",
-    "test": "NODE_ENV=test node --test",
+    "start": "cross-env NODE_ENV=production node index.js",
+    "dev": "cross-env NODE_ENV=development node --watch index.js",
+    "test": "cross-env NODE_ENV=test node --test",
     "lint": "eslint ."
   },
   "keywords": [],
@@ -13,10 +13,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "cross-env": "^7.0.3",
     "dotenv": "^16.4.7",
     "express": "^5.1.0",
-    "mongoose": "^8.13.2"
+    "mongoose": "^8.13.2",
+    "cross-env": "^7.0.3"
   },
   "devDependencies": {
     "supertest": "^7.1.1"
