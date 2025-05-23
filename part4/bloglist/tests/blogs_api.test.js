@@ -30,8 +30,12 @@ describe.only('NoTest', () => {
 
     assert.strictEqual(response.body.length, initialBlogs.length)
   })
-})
 
-// test('testTest', () => {
-//   expect(2 + 2).equal(4)
-// })
+  test('blog posts have id property instead of _id', async () => {
+    const response = await api.get('/api/blogs')
+    const blog = response.body[0]
+
+    assert.ok(blog.id)
+    assert.strictEqual(blog._id, undefined)
+  })
+})
