@@ -38,4 +38,24 @@ describe.only('NoTest', () => {
     assert.ok(blog.id)
     assert.strictEqual(blog._id, undefined)
   })
+  test('a valid blog can be added ', async () => {
+    const newBlog = {
+      title: 'test',
+      author: 'Serhii',
+      url: 'test',
+      likes: 22,
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const response = await api.get('/api/blogs')
+    const authors = response.body.map(r => r.author)
+    assert.strictEqual(response.body.length, initialBlogs.length + 1)
+    assert(authors.includes('Serhii'))
+
+  })
 })
