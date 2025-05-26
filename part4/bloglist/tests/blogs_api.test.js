@@ -34,7 +34,6 @@ describe.only('NoTest', () => {
   test('blog posts have id property instead of _id', async () => {
     const response = await api.get('/api/blogs')
     const blog = response.body[0]
-
     assert.ok(blog.id)
     assert.strictEqual(blog._id, undefined)
   })
@@ -58,4 +57,22 @@ describe.only('NoTest', () => {
     assert(authors.includes('Serhii'))
 
   })
+  test('if likes property is missing, it will default to 0', async () => {
+    const newBlog = {
+      title: 'Blog without likes',
+      author: 'Serhii',
+      url: 'http://test.com'
+    }
+
+    const response = await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    if (response.body.likes !== 0) {
+      throw new Error(`Expected likes to be 0, but got ${response.body.likes}`)
+    }
+  })
+
 })
