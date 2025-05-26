@@ -61,7 +61,7 @@ describe.only('NoTest', () => {
     const newBlog = {
       title: 'Blog without likes',
       author: 'Serhii',
-      url: 'http://test.com'
+      url: 'testUrl'
     }
 
     const response = await api
