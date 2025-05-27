@@ -18,7 +18,7 @@ describe('when there are initially some blogs saved', () => {
     await Blog.insertMany(initialBlogs)
   })
 
-  describe('retrieving blogs', () => {
+  describe('viewing a blogs', () => {
     test('blogs are returned as json and correct number', async () => {
       const response = await api
         .get('/api/blogs')
@@ -99,6 +99,16 @@ describe('when there are initially some blogs saved', () => {
 
       const response = await api.get('/api/blogs')
       assert.strictEqual(response.body.length, initialBlogs.length)
+    })
+  })
+  describe('deletion of a blog', () => {
+    test('succeeds with status code 204 if id is valid', async () => {
+      const blogsAtStart = await api.get('/api/blogs')
+      const blogToDelete = blogsAtStart.body[0]
+
+      await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
+      const blogsAtEnd = await api.get('/api/blogs')
+      assert.strictEqual(blogsAtEnd.body.length, blogsAtStart.body.length - 1)
     })
   })
 })
