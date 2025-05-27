@@ -74,5 +74,35 @@ describe.only('NoTest', () => {
       throw new Error(`Expected likes to be 0, but got ${response.body.likes}`)
     }
   })
+  test('if title is missing', async () => {
+    const newBlog = {
+      author: 'Serhii',
+      url: 'testUrl',
+      likes: 5
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+
+    const response = await api.get('/api/blogs')
+    assert.strictEqual(response.body.length, initialBlogs.length)
+  })
+  test('if url is missing', async () => {
+    const newBlog = {
+      title: "testTitle",
+      author: 'Serhii',
+      likes: 5
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+
+    const response = await api.get('/api/blogs')
+    assert.strictEqual(response.body.length, initialBlogs.length)
+  })
 
 })
