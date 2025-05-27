@@ -111,6 +111,28 @@ describe('when there are initially some blogs saved', () => {
       assert.strictEqual(blogsAtEnd.body.length, blogsAtStart.body.length - 1)
     })
   })
+  describe('updating a blog', () => {
+  test('succeeds in updating the number of likes', async () => {
+    const blogsAtStart = await api.get('/api/blogs')
+    const blogToUpdate = blogsAtStart.body[0]
+
+    const updatedData = {
+      ...blogToUpdate,
+      likes: blogToUpdate.likes + 10
+    }
+
+    const response = await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(updatedData)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    assert.strictEqual(response.body.likes, blogToUpdate.likes + 10)
+    assert.strictEqual(response.body.title, blogToUpdate.title)
+    assert.strictEqual(response.body.author, blogToUpdate.author)
+    assert.strictEqual(response.body.url, blogToUpdate.url)
+  })
+})
 })
 
 after(async () => {
