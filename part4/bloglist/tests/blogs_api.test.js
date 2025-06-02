@@ -4,18 +4,14 @@ const { test, after, beforeEach, describe } = require('node:test')
 const supertest = require('supertest')
 const app = require('../app')
 const Blog = require('../models/blog')
+const helper = require('./test_helper')
 
 const api = supertest(app)
-
-const initialBlogs = [
-  { title: 'First blog', author: 'Author1', url: 'http://example.com/1', likes: 1 },
-  { title: 'Second blog', author: 'Author2', url: 'http://example.com/2', likes: 2 }
-]
 
 describe('when there are initially some blogs saved', () => {
   beforeEach(async () => {
     await Blog.deleteMany({})
-    await Blog.insertMany(initialBlogs)
+    await Blog.insertMany(helper.initialBlogs)
   })
 
   describe('viewing a blogs', () => {
