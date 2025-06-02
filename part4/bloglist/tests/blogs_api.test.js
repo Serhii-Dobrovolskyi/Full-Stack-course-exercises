@@ -21,7 +21,7 @@ describe('when there are initially some blogs saved', () => {
         .expect(200)
         .expect('Content-Type', /application\/json/)
 
-      assert.strictEqual(response.body.length, initialBlogs.length)
+      assert.strictEqual(response.body.length, helper.initialBlogs.length)
     })
 
     test('blog posts have id property instead of _id', async () => {
@@ -51,7 +51,7 @@ describe('when there are initially some blogs saved', () => {
       const response = await api.get('/api/blogs')
       const authors = response.body.map(r => r.author)
 
-      assert.strictEqual(response.body.length, initialBlogs.length + 1)
+      assert.strictEqual(response.body.length, helper.initialBlogs.length + 1)
       assert(authors.includes('Serhii'))
     })
 
@@ -81,7 +81,7 @@ describe('when there are initially some blogs saved', () => {
       await api.post('/api/blogs').send(newBlog).expect(400)
 
       const response = await api.get('/api/blogs')
-      assert.strictEqual(response.body.length, initialBlogs.length)
+      assert.strictEqual(response.body.length, helper.initialBlogs.length)
     })
 
     test('fails with 400 if url is missing', async () => {
@@ -94,7 +94,7 @@ describe('when there are initially some blogs saved', () => {
       await api.post('/api/blogs').send(newBlog).expect(400)
 
       const response = await api.get('/api/blogs')
-      assert.strictEqual(response.body.length, initialBlogs.length)
+      assert.strictEqual(response.body.length, helper.initialBlogs.length)
     })
   })
   describe('deletion of a blog', () => {
