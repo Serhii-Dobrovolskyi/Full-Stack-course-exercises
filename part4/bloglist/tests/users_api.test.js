@@ -19,7 +19,7 @@ describe('when there are initially some users saved', () => {
       const newUser = {
          username: 'root',
          name: 'Serhii',
-         password: 'вавмавмв'
+         password: 'dfdgert'
       }
       await api.post('/api/users').send(newUser).expect(400)
 
