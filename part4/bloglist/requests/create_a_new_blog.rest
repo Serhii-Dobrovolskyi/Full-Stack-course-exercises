@@ -1,11 +1,11 @@
 
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNlcmgiLCJpZCI6IjY4NWJkNmUxYTA4OTkzOWU3NGQyYWI2YyIsImlhdCI6MTc1MDk2ODY0NH0.E4Ukbri70nX1qs9LSNchGWWrBC5Y7Y3WizOBvaAypcU
 
 {
-   "title": "asas asd axaaitle6",
-   "author": "testAuthoraxsasa",
-   "url": "testUrl6",
-   "likes": 2325,
-   "userId": "6852d1513f8087a649d77f87"
+   "title": "Serhii title",
+   "author": "Serhii Dobrovolskyi",
+   "url": "testUrl.com",
+   "likes": 232425
 }
