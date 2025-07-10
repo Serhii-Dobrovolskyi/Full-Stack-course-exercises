@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -57,6 +58,8 @@ const App = () => {
       setAuthor("");
       setUrl("");
     });
+    setErrorMessage(`a new blog ${title} by ${author} added`);
+    setTimeout(() => setErrorMessage(null), 3000);
   };
 
   const loginForm = () => (
@@ -84,6 +87,9 @@ const App = () => {
     return (
       <div>
         <h2>Log in to application</h2>
+        {errorMessage && (
+          <Notification message={errorMessage} style={"error"} />
+        )}
         {loginForm()}
       </div>
     );
@@ -91,6 +97,9 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
+      {errorMessage && (
+        <Notification message={errorMessage} style={"success"} />
+      )}
       <p>
         {user.name} logged in{" "}
         <button
