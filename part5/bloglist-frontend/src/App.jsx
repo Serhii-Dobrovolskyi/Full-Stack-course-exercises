@@ -51,7 +51,6 @@ const App = () => {
       author,
       url,
     };
-
     blogService.create(blogObj).then((returnedBlog) => {
       setBlogs(blogs.concat(returnedBlog));
       setTitle("");
