@@ -4,6 +4,8 @@ import blogService from "./services/blogs";
 import loginService from "./services/login";
 import Notification from "./components/Notification";
 
+import LoginForm from "./components/LoginForm";
+
 const App = () => {
   const [blogs, setBlogs] = useState([]);
 
@@ -61,28 +63,6 @@ const App = () => {
     setErrorMessage(`a new blog ${title} by ${author} added`);
     setTimeout(() => setErrorMessage(null), 3000);
   };
-
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-        <input
-          type="text"
-          value={username}
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-        <input
-          type="password"
-          value={password}
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type="submit">login</button>
-    </form>
-  );
   if (user === null) {
     return (
       <div>
@@ -90,7 +70,13 @@ const App = () => {
         {errorMessage && (
           <Notification message={errorMessage} style={"error"} />
         )}
-        {loginForm()}
+        <LoginForm
+          handleLogin={handleLogin}
+          username={username}
+          password={password}
+          setUsername={setUsername}
+          setPassword={setPassword}
+        />
       </div>
     );
   }
