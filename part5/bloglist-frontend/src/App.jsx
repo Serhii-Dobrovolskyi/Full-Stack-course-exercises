@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
@@ -20,6 +20,8 @@ const App = () => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
+
+  const blogFormRef = useRef();
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -51,19 +53,22 @@ const App = () => {
   const addBlog = (e) => {
     e.preventDefault();
 
-    const blogObj = {
-      title,
-      author,
-      url,
-    };
-    blogService.create(blogObj).then((returnedBlog) => {
-      setBlogs(blogs.concat(returnedBlog));
-      setTitle("");
-      setAuthor("");
-      setUrl("");
-    });
-    setErrorMessage(`a new blog ${title} by ${author} added`);
-    setTimeout(() => setErrorMessage(null), 3000);
+    if (author.length && title.length) {
+      const blogObj = {
+        title,
+        author,
+        url,
+      };
+      blogFormRef.current.toggleVisible();
+      blogService.create(blogObj).then((returnedBlog) => {
+        setBlogs(blogs.concat(returnedBlog));
+        setTitle("");
+        setAuthor("");
+        setUrl("");
+      });
+      setErrorMessage(`a new blog ${title} by ${author} added`);
+      setTimeout(() => setErrorMessage(null), 3000);
+    }
   };
   if (user === null) {
     return (
@@ -100,7 +105,7 @@ const App = () => {
         </button>
       </p>
       <h3>create new</h3>
-      <Togglable buttonLabel="new blog">
+      <Togglable buttonLabel="new blog" ref={blogFormRef}>
         <BlogForm
           addBlog={addBlog}
           title={title}
