@@ -27,17 +27,6 @@ const Blog = ({ blog }) => {
       )}
     </div>
   );
-  // return (
-  //   <div style={blogStyle}>
-  //     <div>
-  //       {blog.title} {blog.author}{" "}
-  //       <button onClick={() => setShowAll(!showAll)}>hide</button>
-  //     </div>
-  //     <div>{blog.url}</div>
-  //     <div>{blog.likes}</div>
-  //     <div>{blog.user.username}</div>
-  //   </div>
-  // );
 };
 
 export default Blog;
