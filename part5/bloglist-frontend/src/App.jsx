@@ -17,10 +17,6 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [url, setUrl] = useState("");
-
   const blogFormRef = useRef();
 
   useEffect(() => {
@@ -50,25 +46,15 @@ const App = () => {
     }
   };
 
-  const addBlog = (e) => {
-    e.preventDefault();
-
-    if (author.length && title.length) {
-      const blogObj = {
-        title,
-        author,
-        url,
-      };
-      blogFormRef.current.toggleVisible();
-      blogService.create(blogObj).then((returnedBlog) => {
-        setBlogs(blogs.concat(returnedBlog));
-        setTitle("");
-        setAuthor("");
-        setUrl("");
-      });
-      setErrorMessage(`a new blog ${title} by ${author} added`);
+  const addBlog = (blogObj) => {
+    blogFormRef.current.toggleVisible();
+    blogService.create(blogObj).then((returnedBlog) => {
+      setBlogs(blogs.concat(returnedBlog));
+      setErrorMessage(
+        `a new blog ${returnedBlog.title} by ${returnedBlog.author} added`
+      );
       setTimeout(() => setErrorMessage(null), 3000);
-    }
+    });
   };
   if (user === null) {
     return (
@@ -106,15 +92,7 @@ const App = () => {
       </p>
       <h3>create new</h3>
       <Togglable buttonLabel="new blog" ref={blogFormRef}>
-        <BlogForm
-          addBlog={addBlog}
-          title={title}
-          setTitle={setTitle}
-          author={author}
-          setAuthor={setAuthor}
-          url={url}
-          setUrl={setUrl}
-        />
+        <BlogForm createBlog={addBlog} />
       </Togglable>
 
       {blogs.map((blog) => (
