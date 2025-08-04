@@ -21,7 +21,9 @@ const Blog = ({ blog }) => {
       {showAll && (
         <>
           <div>{blog.url}</div>
-          <div>likes {blog.likes} <button>like</button></div>
+          <div>
+            likes {blog.likes} <button>like</button>
+          </div>
           <div>{blog.user.username}</div>
         </>
       )}
