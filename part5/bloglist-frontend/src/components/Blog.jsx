@@ -17,11 +17,12 @@ const Blog = ({ blog, onUpdateBlog }) => {
       author: blog.author,
       url: blog.url,
       likes: blog.likes + 1,
-      user: blog.user.id || blog.user,
+      user: blog.user.id,
     };
-    blogService
-      .update(blog.id, updatedObj)
-      .then((returnedBlog) => onUpdateBlog(returnedBlog));
+    blogService.update(blog.id, updatedObj).then((returnedBlog) => {
+      returnedBlog.user = blog.user;
+      onUpdateBlog(returnedBlog);
+    });
   };
   return (
     <div style={blogStyle}>
