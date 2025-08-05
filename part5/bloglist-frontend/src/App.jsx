@@ -56,6 +56,12 @@ const App = () => {
       setTimeout(() => setErrorMessage(null), 3000);
     });
   };
+
+  const handleLikeUpdate = (updatedBlog) => {
+    setBlogs(
+      blogs.map((blog) => (blog.id === updatedBlog.id ? updatedBlog : blog))
+    );
+  };
   if (user === null) {
     return (
       <div>
@@ -96,7 +102,7 @@ const App = () => {
       </Togglable>
 
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} onUpdateBlog={handleLikeUpdate} />
       ))}
     </div>
   );
