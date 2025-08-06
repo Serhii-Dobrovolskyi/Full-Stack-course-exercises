@@ -31,11 +31,6 @@ const Blog = ({ blog, onUpdateBlog, onDeleteBlog, user }) => {
       });
     }
   };
-  const testFunc = () => {
-    user.username === blog.user.username
-      ? console.log(true)
-      : console.log(false);
-  };
 
   return (
     <div style={blogStyle}>
