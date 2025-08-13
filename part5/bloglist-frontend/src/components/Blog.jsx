@@ -1,16 +1,16 @@
-import { useState } from 'react'
-import blogService from '../services/blogs'
+import { useState } from "react";
+import blogService from "../services/blogs";
 
 const Blog = ({ blog, onUpdateBlog, onDeleteBlog, user }) => {
-  const [showAll, setShowAll] = useState(false)
+  const [showAll, setShowAll] = useState(false);
 
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
-    border: 'solid',
+    border: "solid",
     borderWidth: 1,
     marginBottom: 5,
-  }
+  };
   const handleLike = () => {
     const updatedObj = {
       title: blog.title,
@@ -18,32 +18,33 @@ const Blog = ({ blog, onUpdateBlog, onDeleteBlog, user }) => {
       url: blog.url,
       likes: blog.likes + 1,
       user: blog.user.id,
-    }
+    };
     blogService.update(blog.id, updatedObj).then((returnedBlog) => {
-      returnedBlog.user = blog.user
-      onUpdateBlog(returnedBlog)
-    })
-  }
+      returnedBlog.user = blog.user;
+      onUpdateBlog(returnedBlog);
+    });
+  };
   const removeBlog = () => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
       blogService.remove(blog.id).then(() => {
-        onDeleteBlog(blog.id)
-      })
+        onDeleteBlog(blog.id);
+      });
     }
-  }
+  };
 
   return (
     <div style={blogStyle}>
       <div>
-        {blog.title} {blog.author}{' '}
+        <span data-testid="blog-title">{blog.title}</span>{" "}
+        <span data-testid="blog-author">{blog.author}</span>
         <button onClick={() => setShowAll(!showAll)}>
-          {showAll ? 'hide' : 'view'}
+          {showAll ? "hide" : "view"}
         </button>
       </div>
       {showAll && (
         <>
-          <div>{blog.url}</div>
-          <div>
+          <div data-testid="blog-url">{blog.url}</div>
+          <div data-testid="blog-likes">
             likes {blog.likes} <button onClick={handleLike}>like</button>
           </div>
           <div>{blog.user.username}</div>
@@ -53,7 +54,7 @@ const Blog = ({ blog, onUpdateBlog, onDeleteBlog, user }) => {
         </>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Blog
+export default Blog;

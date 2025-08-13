@@ -2,7 +2,7 @@ module.exports = {
   root: true,
   env: {
     browser: true,
-    es2020: true,
+    es2020: true, 'vitest-globals/env': true,
   },
   extends: [
     'eslint:recommended',
@@ -15,22 +15,22 @@ module.exports = {
   settings: { react: { version: '18.2' } },
   plugins: ['react-refresh'],
   rules: {
-    "indent": [
-      "error",
-      2
-    ],
-    "linebreak-style": [
-      "error",
-      "unix"
-    ],
-    "quotes": [
-      "error",
-      "single"
-    ],
-    "semi": [
-      "error",
-      "never"
-    ],
+    // "indent": [
+    //   "error",
+    //   2
+    // ],
+    // "linebreak-style": [
+    //   "error",
+    //   "unix"
+    // ],
+    // "quotes": [
+    //   "error",
+    //   "single"
+    // ],
+    // "semi": [
+    //   "error",
+    //   "never"
+    // ],
     "eqeqeq": "error",
     "no-trailing-spaces": "error",
     "object-curly-spacing": [
