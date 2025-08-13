@@ -12,11 +12,6 @@ test("blog renders the title & author, but not URL or number of likes", () => {
 
   render(<Blog blog={blog} />);
 
-  const elemTitle = screen.getByTestId("blog-title");
-  const elemAuthor = screen.getByTestId("blog-author");
-  const elemUrl = screen.queryByTestId("blog-url");
-  const elemLikes = screen.queryByTestId("blog-likes");
-
   expect(screen.getByTestId("blog-title")).toBeDefined();
   expect(screen.getByTestId("blog-author")).toBeDefined();
   expect(screen.queryByTestId("blog-url")).toBeNull();
