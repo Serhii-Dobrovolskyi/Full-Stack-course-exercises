@@ -1,7 +1,10 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import Blog from "./Blog";
 import { expect } from "vitest";
 import userEvent from "@testing-library/user-event";
+import blogService from "../services/blogs";
+
+vi.spyOn(blogService, "update").mockResolvedValue({});
 
 test("blog renders the title & author, but not URL or number of likes", () => {
   const blog = {
@@ -38,4 +41,30 @@ test("URL and likes are shown when the button controlling the shown details has 
 
   expect(screen.getByTestId("blog-url")).toBeInTheDocument();
   expect(screen.getByTestId("blog-likes")).toBeInTheDocument();
+});
+
+test("if the like button is clicked twice, the event handler the component received as props is called twice", async () => {
+  const blog = {
+    title: "blogTitle",
+    author: "blogAuthor",
+    url: "blogUrl",
+    likes: 11,
+    user: { username: "owner", id: "123" },
+  };
+  const currentUser = { username: "someone" };
+
+  const mockHandler = vi.fn();
+  render(<Blog blog={blog} user={currentUser} onUpdateBlog={mockHandler} />);
+  const user = userEvent.setup();
+
+  await user.click(screen.getByText("view"));
+
+  const button = screen.getByText("like");
+
+  await user.click(button);
+  await user.click(button);
+
+  await waitFor(() => {
+    expect(mockHandler.mock.calls).toHaveLength(2);
+  });
 });
