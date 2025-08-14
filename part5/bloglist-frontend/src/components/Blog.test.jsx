@@ -12,8 +12,8 @@ test("blog renders the title & author, but not URL or number of likes", () => {
 
   render(<Blog blog={blog} />);
 
-  expect(screen.getByTestId("blog-title")).toBeDefined();
-  expect(screen.getByTestId("blog-author")).toBeDefined();
+  expect(screen.getByTestId("blog-title")).toBeInTheDocument();
+  expect(screen.getByTestId("blog-author")).toBeInTheDocument();
   expect(screen.queryByTestId("blog-url")).toBeNull();
   expect(screen.queryByTestId("blog-likes")).toBeNull();
 });
