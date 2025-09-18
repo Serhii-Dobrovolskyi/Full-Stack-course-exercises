@@ -32,4 +32,22 @@ describe('Blog app', function () {
       cy.contains('Serhii Dobrovol logged in').should('not.exist')
     })
   })
+  describe('When logged in', function () {
+    beforeEach(function () {
+      cy.get('#username').type('serh')
+      cy.get('#password').type('lavr444')
+      cy.contains('login').click()
+      cy.contains('Serhii Dobrovol logged in')
+    })
+
+    it('A blog can be created', function () {
+      cy.contains('new blog').click()
+      cy.get('#title').type('test_title')
+      cy.get('#author').type('test_author')
+      cy.get('#url').type('test_url')
+      cy.get('button').contains('create').click()
+
+      cy.contains('test_title test_author')
+    })
+  })
 })
