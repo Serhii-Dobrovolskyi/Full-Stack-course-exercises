@@ -72,6 +72,39 @@ describe('Blog app', function () {
           .parent()
           .should('contain', 'likes 1')
       })
+      it('creator can see the remove button', function () {
+        cy.contains('test_title')
+          .parent()
+          .find('button')
+          .contains('view')
+          .click()
+        cy.contains('test_title').parent().as('theBlog')
+        cy.get('@theBlog').contains('remove')
+      })
+      it('other users cannot see the remove button', function () {
+        cy.contains('log out').click()
+
+        const anotherUser = {
+          name: 'Another User',
+          username: 'anotherUsername',
+          password: 'anotherPassword',
+        }
+        cy.request('POST', 'http://localhost:3003/api/users', anotherUser)
+        cy.visit('http://localhost:5173/')
+
+        cy.get('#username').type('anotherUsername')
+        cy.get('#password').type('anotherPassword')
+        cy.contains('login').click()
+        cy.contains('Another User logged in')
+
+        cy.contains('test_title')
+          .parent()
+          .find('button')
+          .contains('view')
+          .click()
+        cy.contains('test_title').parent().as('theBlog')
+        cy.get('@theBlog').should('not.contain', 'remove')
+      })
     })
   })
 })
