@@ -33,7 +33,7 @@ const Blog = ({ blog, onUpdateBlog, onDeleteBlog, user }) => {
   };
 
   return (
-    <div style={blogStyle}>
+    <div className="blog" style={blogStyle}>
       <div>
         <span data-testid="blog-title">{blog.title}</span>{" "}
         <span data-testid="blog-author">{blog.author}</span>
