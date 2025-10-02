@@ -222,33 +222,31 @@ describe('Blog app', function () {
       })
     })
 
-    // ===== Добавлено для задания 5.23 =====
     describe('When several blogs exist', function () {
       beforeEach(function () {
         // A
-        cy.contains('new blog').click()
+        cy.get('button').contains('new blog').click()
         cy.get('#title').type('A title')
         cy.get('#author').type('Auth A')
         cy.get('#url').type('url-a')
-        cy.contains('create').click()
+        cy.get('button').contains('create').click()
 
         // B
-        cy.contains('new blog').click()
+        cy.get('button').contains('new blog').click()
         cy.get('#title').type('B title')
         cy.get('#author').type('Auth B')
         cy.get('#url').type('url-b')
-        cy.contains('create').click()
+        cy.get('button').contains('create').click()
 
         // C
-        cy.contains('new blog').click()
+        cy.get('button').contains('new blog').click()
         cy.get('#title').type('C title')
         cy.get('#author').type('Auth C')
         cy.get('#url').type('url-c')
-        cy.contains('create').click()
+        cy.get('button').contains('create').click()
       })
 
       it('orders blogs by likes (most liked first)', function () {
-        // раскрываем все карточки, чтобы были видны лайки/кнопки
         const openDetails = (title) =>
           cy.contains(title).parent().within(() => cy.contains('view').click())
 
@@ -256,26 +254,22 @@ describe('Blog app', function () {
         openDetails('B title')
         openDetails('C title')
 
-        // кликаем like с ожиданием обновления счётчика
         const likeNTimes = (title, times) => {
-          cy.contains(title).parent().within(() => {
-            for (let i = 1; i <= times; i++) {
-              cy.contains('like').click()
-              cy.contains(`likes ${i}`).should('be.visible')
-            }
-          })
+          cy.contains(title).closest('.blog').as('blog')
+          for (let i = 1; i <= times; i++) {
+            cy.get('@blog').contains('like').click()
+            cy.get('@blog').contains(`likes ${i}`)
+          }
         }
 
-        likeNTimes('A title', 1) // 1 лайк
-        likeNTimes('B title', 2) // 2 лайка
-        likeNTimes('C title', 3) // 3 лайка
+        likeNTimes('C title', 3)
+        likeNTimes('B title', 2)
+        likeNTimes('A title', 1)
 
-        // проверяем порядок карточек по классу .blog
         cy.get('.blog').eq(0).should('contain', 'C title')
         cy.get('.blog').eq(1).should('contain', 'B title')
         cy.get('.blog').eq(2).should('contain', 'A title')
       })
     })
-    // ===== конец добавления для 5.23 =====
   })
 })
