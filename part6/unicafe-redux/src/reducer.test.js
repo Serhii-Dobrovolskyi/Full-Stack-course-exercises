@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest'
 import deepFreeze from 'deep-freeze'
 import counterReducer from './reducer'
 
