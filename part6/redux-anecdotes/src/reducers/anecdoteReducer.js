@@ -31,8 +31,7 @@ const reducer = (state = initialState, action) => {
     default:
       return state
   }
-  // console.log('state now: ', state)
-  // console.log('action', action)
+
 }
 
 export const addVote = (id) => ({
